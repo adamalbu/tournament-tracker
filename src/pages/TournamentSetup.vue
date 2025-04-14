@@ -12,7 +12,7 @@ export default defineComponent({
   data() {
     return {
       tournament: useTournamentStore(),
-      new_players: [] as { name: string; points: number }[],
+      new_players: [{ name: '', points: 0 }] as { name: string; points: number }[],
       court_type: 'full' as 'full' | 'half',
       new_court_count: 1,
     };
