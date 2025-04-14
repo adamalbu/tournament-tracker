@@ -8,19 +8,35 @@ import {useTournamentStore} from "@/stores/tournament.ts";
 
 export default defineComponent({
   name: "Tournament",
-  components: {CircleCross, CircleCheck, Plus, PlayerEdit },
+  components: {CircleCross, CircleCheck, Plus, PlayerEdit},
   data() {
     return {
       tournament: useTournamentStore(),
       new_players: [] as { name: string; points: number }[],
       court_type: 'full' as 'full' | 'half',
-      court_number_valid: true,
       new_court_count: 1,
     };
   },
+  computed: {
+    validPlayerCount() {
+      return this.new_players.length >= 2;
+    },
+    validCourtCount() {
+      return this.new_court_count > 0;
+    },
+    isSubmitDisabled() {
+      return !this.validPlayerCount || !this.validCourtCount;
+    }
+  },
   methods: {
-    addPlayer() {
-      this.new_players.push({ name: '', points: 0 })
+    enterPressed() {
+      const focusedElement = document.activeElement as HTMLInputElement
+      if (focusedElement.tagName === 'INPUT' && focusedElement.type === 'text') {
+        this.addPlayerAndFocus()
+      }
+    },
+    addPlayerAndFocus() {
+      this.new_players.push({name: '', points: 0})
       // focus on last input
       this.$nextTick(() => {
         const inputs = document.querySelectorAll('input')
@@ -41,24 +57,8 @@ export default defineComponent({
         halfButton?.classList.remove('alternative')
       }
     },
-    checkValidity(event: Event) {
-      const input = event.target as HTMLInputElement
-      const value = parseInt(input.value)
-
-      this.court_number_valid = !(isNaN(value) || value < 1);
-    },
-    setCourtAmounts(event: Event) {
-      const input = event.target as HTMLInputElement
-      this.new_court_count = parseInt(input.value)
-      if (this.court_number_valid) {
-        document.getElementById('submit')?.removeAttribute('disabled')
-      } else {
-        document.getElementById('submit')?.setAttribute('disabled', 'true')
-      }
-    },
-    courtAmountsUpdate(event: Event) {
-      this.checkValidity(event)
-      this.setCourtAmounts(event)
+    updateCourtCount(event: Event) {
+      this.new_court_count = parseInt((event.target as HTMLInputElement).value)
     },
     submitClicked() {
       this.tournament.players = this.new_players
@@ -78,10 +78,14 @@ export default defineComponent({
       :index="index"
       v-model="new_players[index].name"
       @delete="new_players.splice(index, 1)"
-      @keydown.enter="addPlayer"
+      @keydown.enter="enterPressed"
     />
-    <button class="alternative center" id="add" @click="addPlayer"><Plus /> Add Player</button>
+    <button class="alternative center" id="add" @click="addPlayerAndFocus">
+      <Plus/>
+      Add Player
+    </button>
   </div>
+  <span style="color: red" v-if="!validPlayerCount">Must have at least 2 players</span>
   <div id="court_type">
     Court type:
     <button @click="setCourtType('full')" id="full">Full</button>
@@ -89,11 +93,12 @@ export default defineComponent({
   </div>
   <div id="court_amounts">
     {{ court_type.charAt(0).toUpperCase() + court_type.slice(1) }} courts available:
-    <input type="number" min="1" max="99" value="1" @input="courtAmountsUpdate" />
-    <circle-check style="color: limegreen" v-if="court_number_valid"/>
+    <input type="number" min="1" max="99" value="1" @input="updateCourtCount"/>
+    <circle-check style="color: limegreen" v-if="validCourtCount"/>
     <circle-cross style="color: red" v-else/>
   </div>
-  <button id="submit" @click="submitClicked">OK</button>
+  <span style="color: red" v-if="!validCourtCount">Must be a number greater than 0 <br/></span>
+  <button id="submit" @click="submitClicked" :disabled="isSubmitDisabled">OK</button>
 </template>
 
 <style scoped>
