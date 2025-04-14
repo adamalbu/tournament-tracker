@@ -4,21 +4,23 @@ import PlayerEdit from '@/components/PlayerEdit.vue';
 import Plus from "@/components/icons/plus.vue";
 import CircleCheck from "@/components/icons/circle-check.vue";
 import CircleCross from "@/components/icons/circle-cross.vue";
+import {useTournamentStore} from "@/stores/tournament.ts";
 
 export default defineComponent({
   name: "Tournament",
   components: {CircleCross, CircleCheck, Plus, PlayerEdit },
   data() {
     return {
-      players: [] as { name: string; points: number }[],
+      tournament: useTournamentStore(),
+      new_players: [] as { name: string; points: number }[],
       court_type: 'full' as 'full' | 'half',
       court_number_valid: true,
-      court_amounts: 1,
+      new_court_count: 1,
     };
   },
   methods: {
     addPlayer() {
-      this.players.push({ name: '', points: 0 })
+      this.new_players.push({ name: '', points: 0 })
       // focus on last input
       this.$nextTick(() => {
         const inputs = document.querySelectorAll('input')
@@ -47,7 +49,7 @@ export default defineComponent({
     },
     setCourtAmounts(event: Event) {
       const input = event.target as HTMLInputElement
-      this.court_amounts = parseInt(input.value)
+      this.new_court_count = parseInt(input.value)
       if (this.court_number_valid) {
         document.getElementById('submit')?.removeAttribute('disabled')
       } else {
@@ -59,8 +61,8 @@ export default defineComponent({
       this.setCourtAmounts(event)
     },
     submitClicked() {
-      localStorage.setItem('players', JSON.stringify(this.players))
-      localStorage.setItem('court_amounts', JSON.stringify(this.court_amounts))
+      this.tournament.players = this.new_players
+      this.tournament.court_count = this.new_court_count
 
       this.$router.push('/tournament')
     }
@@ -70,11 +72,12 @@ export default defineComponent({
 
 <template>
   <div id="players_add">
+    <!--suppress JSUnusedLocalSymbols -->
     <PlayerEdit
-      v-for="(player, index) in players"
+      v-for="(player, index) in new_players"
       :index="index"
-      v-model="players[index].name"
-      @delete="players.splice(index, 1)"
+      v-model="new_players[index].name"
+      @delete="new_players.splice(index, 1)"
       @keydown.enter="addPlayer"
     />
     <button class="alternative center" id="add" @click="addPlayer"><Plus /> Add Player</button>
