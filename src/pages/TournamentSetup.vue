@@ -71,7 +71,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="players_add">
+  <div id="players-container" data-test="players-container">
     <!--suppress JSUnusedLocalSymbols -->
     <PlayerEdit
       v-for="(player, index) in new_players"
@@ -80,29 +80,29 @@ export default defineComponent({
       @delete="new_players.splice(index, 1)"
       @keydown.enter="enterPressed"
     />
-    <button class="alternative center" id="add" @click="addPlayerAndFocus">
+    <button class="alternative center" id="add-button" data-test="add-player" @click="addPlayerAndFocus">
       <Plus/>
       Add Player
     </button>
   </div>
   <span style="color: red" v-if="!validPlayerCount">Must have at least 2 players</span>
-  <div id="court_type">
+  <div id="court-type">
     Court type:
     <button @click="setCourtType('full')" id="full">Full</button>
     <button @click="setCourtType('half')" class="alternative" id="half">Half</button>
   </div>
-  <div id="court_amounts">
+  <div id="court-amounts">
     {{ court_type.charAt(0).toUpperCase() + court_type.slice(1) }} courts available:
-    <input type="number" min="1" max="99" value="1" @input="updateCourtCount"/>
+    <input type="number" min="1" max="99" value="1" data-test="court-count-input" @input="updateCourtCount"/>
     <circle-check style="color: limegreen" v-if="validCourtCount"/>
     <circle-cross style="color: red" v-else/>
   </div>
   <span style="color: red" v-if="!validCourtCount">Must be a number greater than 0 <br/></span>
-  <button id="submit" @click="submitClicked" :disabled="isSubmitDisabled">OK</button>
+  <button id="submit" data-test="submit-button" @click="submitClicked" :disabled="isSubmitDisabled">OK</button>
 </template>
 
 <style scoped>
-#players_add {
+#players-container {
   display: flex;
   flex-direction: column;
   width: 300px;
@@ -122,7 +122,7 @@ export default defineComponent({
   border-left: none;
 }
 
-#court_amounts {
+#court-amounts {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -132,7 +132,7 @@ PlayerEdit {
   width: 100%;
 }
 
-#add {
+#add-button {
   display: flex;
   align-items: center;
   width: 100%;

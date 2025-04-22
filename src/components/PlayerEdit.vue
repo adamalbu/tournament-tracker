@@ -39,18 +39,19 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="player_edit">
+  <div class="player-edit">
     <input
       :value="model_value"
       @input="updateValue($event)"
       :placeholder="`Player ${index + 1}`"
+      data-test="player-input"
     />
-    <button class="center" @click="deletePlayer" id="delete"><Trash /></button>
+    <button class="center" @click="deletePlayer" id="delete" data-test="remove-player"><Trash /></button>
   </div>
 </template>
 
 <style scoped>
-.player_edit {
+.player-edit {
   display: flex;
   align-items: center;
   gap: 10px;
