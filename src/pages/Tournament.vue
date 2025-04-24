@@ -3,7 +3,7 @@ import {defineComponent} from 'vue'
 import {useTournamentStore} from "@/stores/tournament.ts";
 
 export default defineComponent({
-  name: "Tournament",
+  name: "TournamentPage",
   data() {
     return {
       tournament: useTournamentStore()

@@ -7,7 +7,7 @@ import CircleCross from "@/components/icons/circle-cross.vue";
 import {useTournamentStore} from "@/stores/tournament.ts";
 
 export default defineComponent({
-  name: "Tournament",
+  name: "TournamentSetup",
   components: {CircleCross, CircleCheck, Plus, PlayerEdit},
   data() {
     return {
@@ -75,6 +75,7 @@ export default defineComponent({
     <!--suppress JSUnusedLocalSymbols -->
     <PlayerEdit
       v-for="(player, index) in new_players"
+      :key="index"
       :index="index"
       v-model="new_players[index].name"
       @delete="new_players.splice(index, 1)"
