@@ -5,7 +5,9 @@ import {useTournamentStore} from '@/stores/tournament.ts'
 export default defineComponent({
   name: "Tournament",
   data() {
-    tournament: useTournamentStore()
+    return {
+      tournament: useTournamentStore()
+    }
   },
   methods: {
     newTournament() {
@@ -17,7 +19,7 @@ export default defineComponent({
   },
   mounted() {
     const load_tournament_button = document.getElementById('load_tournament')
-    if (tournament.court_count < 1) {
+    if (this.tournament.court_count < 1) {
       load_tournament_button?.setAttribute('disabled', 'true')
     } else {
       load_tournament_button?.removeAttribute('disabled')
