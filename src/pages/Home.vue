@@ -1,8 +1,14 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
+import {useTournamentStore} from '@/stores/tournament.ts'
 
 export default defineComponent({
   name: "Tournament",
+  data() {
+    return {
+      tournament: useTournamentStore()
+    }
+  },
   methods: {
     newTournament() {
       this.$router.push('/tournament-setup')
@@ -13,7 +19,7 @@ export default defineComponent({
   },
   mounted() {
     const load_tournament_button = document.getElementById('load_tournament')
-    if (!localStorage.getItem('players')) {
+    if (this.tournament.court_count < 1) {
       load_tournament_button?.setAttribute('disabled', 'true')
     } else {
       load_tournament_button?.removeAttribute('disabled')
