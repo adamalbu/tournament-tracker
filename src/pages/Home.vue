@@ -32,8 +32,8 @@ export default defineComponent({
 <template>
   <div id="app">
     <div id="buttons">
-      <button id="load_tournament" @click="goToTournament">Load Last Tournament</button>
-      <button @click="newTournament">New Tournament</button>
+      <button id="load-tournament" data-test="load-tournament-button" @click="goToTournament">Load Last Tournament</button>
+      <button data-test="new-tournament-button" @click="newTournament">New Tournament</button>
     </div>
   </div>
 </template>
