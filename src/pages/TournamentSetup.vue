@@ -88,8 +88,8 @@ export default defineComponent({
   <span style="color: red" v-if="!validPlayerCount">Must have at least 2 players</span>
   <div id="court-type">
     Court type:
-    <button @click="setCourtType('full')" id="full">Full</button>
-    <button @click="setCourtType('half')" class="alternative" id="half">Half</button>
+    <button @click="setCourtType('full')" id="full" data-test="full-court-button">Full</button>
+    <button @click="setCourtType('half')" class="alternative" id="half" data-test="half-court-button">Half</button>
   </div>
   <div id="court-amounts">
     {{ court_type.charAt(0).toUpperCase() + court_type.slice(1) }} courts available:
