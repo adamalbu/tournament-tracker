@@ -84,6 +84,7 @@ export default defineComponent({
     :selectedOption="court_type"
     label="Court type: "
     @update:selectedOption="court_type = $event"
+    data-test="court-type"
   />
   <NumberInput :min="1" :max="99" :value="new_court_count" @update:value="new_court_count = $event  "
                :label="`${court_type.charAt(0).toUpperCase() + court_type.slice(1)} courts available: `" />
