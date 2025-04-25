@@ -1,7 +1,7 @@
 <template>
     <header class="header">
-      <h1>{{ pageTitle }}</h1>
-      <button @click="goHome" class="center"><House /></button>
+      <h1 data-test="page-title">{{ pageTitle }}</h1>
+      <button @click="goHome" class="center" data-test="home-button"><House /></button>
     </header>
     <router-view />
 </template>
