@@ -114,8 +114,9 @@ describe('TournamentSetup.vue', () => {
   })
 
   it('has a court type that can be changed', async () => {
-    let fullCourtButton = wrapper.find('[data-test="full-court-button"]')
-    let halfCourtButton = wrapper.find('[data-test="half-court-button"]')
+    let courtTypeButtons = wrapper.find('[data-test="court-type"]').findAll('button')
+    let fullCourtButton = courtTypeButtons[0]
+    let halfCourtButton = courtTypeButtons[1]
 
     await fullCourtButton.trigger('click')
     expect((wrapper.vm.$data as { court_type: string }).court_type).toBe('full')

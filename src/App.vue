@@ -22,6 +22,7 @@ export default defineComponent({
     this.updateTitle()
   },
   watch: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     '$route'(newRoute) {
       this.updateTitle()
     }
